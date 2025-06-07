@@ -1,0 +1,72 @@
+.navbar {
+  background-color: #0048b4 !important;
+}
+
+.navbar-brand img {
+  border-radius: 6px; /* optional: gives smooth corners */
+}
+
+.navbar-brand:hover {
+  opacity: 0.9;
+}
+
+.navbar-nav .nav-link {
+  transition: 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover {
+  text-decoration: underline;
+}
+
+.navbar .form-control {
+  width: 500px;
+}
+
+@media (min-width: 800px) {
+  .navbar .form-control {
+    width: 550px;
+  }
+}
+
+.navbar .form-control {
+  width: 300px;
+}
+
+@media (min-width: 768px) {
+  .navbar .form-control {
+    width: 500px;
+  }
+}
+
+.navbar-brand span {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: white;
+}
+
+
+
+/* CSS or Reister page */
+/* styles.css */
+.custom-register-card {
+    border-radius: 16px;
+    background-color: #fefefe;
+}
+
+.custom-input {
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+}
+
+.custom-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
+}
+
+.custom-btn {
+    border-radius: 10px;
+    font-weight: bold;
+}
