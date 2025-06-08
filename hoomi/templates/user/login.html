@@ -130,7 +130,7 @@ document.getElementById("login-form").addEventListener("submit", async function 
     }
 
     const token = tokenData.token;
-    // localStorage.setItem("authToken", token);
+    localStorage.setItem("authToken", token);
 
     // Fetch user details
     const userRes = await fetch("http://127.0.0.1:8000/api/users/", {
