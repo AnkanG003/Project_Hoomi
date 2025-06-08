@@ -1,0 +1,39 @@
+{% load static %}
+<footer class="bg-dark text-white pt-4 pb-3 mt-5">
+  <div class="container text-center text-md-start">
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <h5 class="text-uppercase">Hoomi</h5>
+        <p>Your trusted home rental partner. We connect tenants and landlords with ease and security.</p>
+      </div>
+
+      <div class="col-md-2 mb-3">
+        <h6 class="text-uppercase">Explore</h6>
+        <ul class="list-unstyled">
+          {% comment %} <li><a href="{% url 'home' %}" class="text-white text-decoration-none">Home</a></li> {% endcomment %}
+          <li><a href="{% url 'post_property' %}" class="text-white text-decoration-none">Post Property</a></li>
+          <li><a href="{% url 'login' %}" class="text-white text-decoration-none">Login</a></li>
+          <li><a href="{% url 'register' %}" class="text-white text-decoration-none">Register</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <h6 class="text-uppercase">Contact</h6>
+        <p>Email: support@hoomi.com</p>
+        <p>Phone: +91 9609836093,+91 9733248165</p>
+        <p>Location: Kolkata, India</p>
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <h6 class="text-uppercase">Follow Us</h6>
+        <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="text-white me-3"><i class="bi bi-instagram"></i></a>
+        <a href="#" class="text-white"><i class="bi bi-twitter-x"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-3">
+    <small>© 2025 Hoomi. All rights reserved.</small>
+  </div>
+</footer>
