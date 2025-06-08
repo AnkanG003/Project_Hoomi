@@ -33,43 +33,177 @@
   </style>
 </head>
 <body>
+<form class="post-form" id="propertyForm" enctype="multipart/form-data">
+  <div class="form-title">Post a Property</div>
 
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-7 col-lg-6">
-        <form class="post-form">
-          <div class="form-title">Post a Property</div>
-
-          <div class="mb-3">
-            <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="title" name="title" required placeholder="e.g. 2BHK Apartment in Salt Lake">
-          </div>
-
-          <div class="mb-3">
-            <label for="location" class="form-label">Location <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="location" name="location" required placeholder="e.g. Salt Lake, Kolkata">
-          </div>
-
-          <div class="mb-3">
-            <label for="price" class="form-label">Price (INR) <span class="text-danger">*</span></label>
-            <input type="number" class="form-control" id="price" name="price" required placeholder="e.g. 15000">
-          </div>
-
-          <div class="mb-3">
-            <label for="description" class="form-label">Property Description</label>
-            <textarea class="form-control" id="description" name="description" rows="4" placeholder="Add more details about the property..."></textarea>
-          </div>
-
-          <div class="mb-3">
-            <label for="image" class="form-label">Upload Image</label>
-            <input class="form-control" type="file" id="image" name="image">
-          </div>
-
-          <button type="submit" class="btn btn-primary w-100">Post Property</button>
-        </form>
-      </div>
-    </div>
+  <div class="mb-3">
+    <label for="title" class="form-label">Title *</label>
+    <input type="text" class="form-control" id="title" name="title" required>
   </div>
 
+  <div class="mb-3">
+    <label for="description" class="form-label">Description</label>
+    <textarea class="form-control" id="description" name="description"></textarea>
+  </div>
+
+  <div class="mb-3">
+    <label for="property_type" class="form-label">Property Type *</label>
+    <select class="form-control" id="property_type" name="property_type" required>
+      <option>Apartment</option>
+      <option>House</option>
+      <option>Studio</option>
+      <option>PG</option>
+      <option>Villa</option>
+      <option>Other</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="furnishing" class="form-label">Furnishing *</label>
+    <select class="form-control" id="furnishing" name="furnishing" required>
+      <option>Furnished</option>
+      <option>Unfurnished</option>
+      <option>Semi-Furnished</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="address" class="form-label">Address *</label>
+    <textarea class="form-control" id="address" name="address" required></textarea>
+  </div>
+
+  <div class="mb-3">
+    <label for="city" class="form-label">City *</label>
+    <input type="text" class="form-control" id="city" name="city" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="state" class="form-label">State *</label>
+    <input type="text" class="form-control" id="state" name="state" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="pincode" class="form-label">Pincode *</label>
+    <input type="text" class="form-control" id="pincode" name="pincode" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="price" class="form-label">Price per Month (INR) *</label>
+    <input type="number" class="form-control" id="price" name="price_per_month" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="bedrooms" class="form-label">Bedrooms *</label>
+    <input type="number" class="form-control" id="bedrooms" name="bedrooms" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="bathrooms" class="form-label">Bathrooms *</label>
+    <input type="number" class="form-control" id="bathrooms" name="bathrooms" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="area" class="form-label">Area (sqft) *</label>
+    <input type="number" class="form-control" id="area" name="area_sqft" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="available_from" class="form-label">Available From *</label>
+    <input type="date" class="form-control" id="available_from" name="available_from" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="images" class="form-label">Upload Images</label>
+    <input class="form-control" type="file" id="images" name="images" multiple>
+  </div>
+
+  <button type="submit" class="btn btn-primary w-100">Post Property</button>
+</form>
 </body>
+
+<script>
+document.getElementById("propertyForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+        alert("Please login first. No auth token found.");
+        return;
+    }
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    const data = {
+        title: formData.get("title"),
+        description: formData.get("description"),
+        property_type: formData.get("property_type"),
+        furnishing: formData.get("furnishing"),
+        address: formData.get("address"),
+        city: formData.get("city"),
+        state: formData.get("state"),
+        pincode: formData.get("pincode"),
+        price_per_month: formData.get("price_per_month"),
+        bedrooms: formData.get("bedrooms"),
+        bathrooms: formData.get("bathrooms"),
+        area_sqft: formData.get("area_sqft"),
+        available_from: formData.get("available_from"),
+        latitude: null,
+        longitude: null
+    };
+
+    try {
+        // 1. Submit property (JSON)
+        const response = await fetch("http://127.0.0.1:8000/property/properties/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${token}`
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error("Property creation failed:", errorData);
+            alert("Error creating property.");
+            return;
+        }
+
+        const createdProperty = await response.json();
+        const propertyId = createdProperty.id;
+        console.log("Property created with ID:", propertyId);
+
+        // 2. Upload each image individually
+        const imageFiles = formData.getAll("images");
+        for (let imageFile of imageFiles) {
+            const imgFormData = new FormData();
+            imgFormData.append("image", imageFile);
+            imgFormData.append("property", propertyId);  // Make sure PropertyImage model has ForeignKey to Property
+
+            const imageUploadRes = await fetch("http://127.0.0.1:8000/property/property-images/", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Token ${token}`
+                },
+                body: imgFormData
+            });
+
+            if (!imageUploadRes.ok) {
+                const err = await imageUploadRes.json();
+                console.error("Image upload failed:", err);
+            }
+        }
+
+        alert("Property and images uploaded successfully!");
+        form.reset();
+
+    } catch (err) {
+        console.error("Error:", err);
+        alert("Something went wrong.");
+    }
+});
+</script>
+
+
 </html>

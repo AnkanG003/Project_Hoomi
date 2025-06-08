@@ -1,3 +1,4 @@
+from django.contrib.auth.views import LoginView
 from rest_framework import viewsets, permissions, filters, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -20,14 +21,13 @@ from .serializers import UserSerializer, UserCreateSerializer
 # Optional index view for rendering HTML templates (non-API)
 def index(request):
     return render(request, 'index.html')
+
 def login(request):
     return render(request, 'user/login.html')
 
 def register(request):
     return render(request, 'user/register.html')
 
-def post_property_view(request):
-    return render(request, 'pages/post_property.html')
 
 # GET: List users based on user_type
 class UserListView(APIView):

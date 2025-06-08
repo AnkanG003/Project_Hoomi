@@ -17,7 +17,7 @@
         <a class="nav-link" href="#">Browse Rentals</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="post_property">Post Property</a>
+        <a class="nav-link" href="property/post_property">Post Property</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Contact</a>
@@ -35,3 +35,25 @@
     </div>
   </div>
 </nav>
+
+<script>
+const postPropertyLink = document.querySelector('.nav-link[href="property/post_property"]');
+
+if (postPropertyLink) {
+  postPropertyLink.addEventListener('click', function (e) {
+    e.preventDefault(); // Prevent default link behavior
+
+    const token = localStorage.getItem("authToken");
+
+    if (!token) {
+      // Save the intended URL before redirecting to login
+      localStorage.setItem("redirectAfterLogin", "/property/post_property/");
+      window.location.href = "login"; // Redirect to your custom login page
+    } else {
+      window.location.href = "/property/post_property/";
+    }
+  });
+}
+
+
+</script>

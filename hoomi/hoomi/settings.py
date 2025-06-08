@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'django_filters',
     'users',
+    'property',
 ]
 
 REST_FRAMEWORK = {
@@ -148,3 +149,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'hoomi/static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 AUTH_USER_MODEL = 'users.User'
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = BASE_DIR / 'media'
