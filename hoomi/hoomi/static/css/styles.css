@@ -70,3 +70,18 @@
     border-radius: 10px;
     font-weight: bold;
 }
+
+/* To adding style property card */
+.property-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.property-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  width: 300px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}

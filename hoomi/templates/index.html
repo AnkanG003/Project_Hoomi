@@ -13,38 +13,105 @@
     {% include 'common_layout/navbar.html' %}
 
     
-    <div id="user-info" style="display: none; margin-top: 20px;">
-        <h4>Welcome, <span id="user-name"></span> (<span id="user-email"></span>)</h4>
+    <!-- <div id="user-info" style="display: none; margin-top: 20px;">
+        <h4>Welcome, <span id="user-name"></span> (<span id="user-email"></span>)</h4> -->
     </div>
-    {% block content %} 
-    {% endblock %}
+    <h1>Available Properties</h1>
+  <div id="propertyList" class="property-list">
+    
+  </div>
+
 
      {% include 'common_layout/footer.html' %}
 </body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="{% static 'js/main.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </html>
 <script>
-window.addEventListener("load", async () => {
-  const token = localStorage.getItem("authToken");
-  if (token) {
-    try {
-      const userRes = await fetch("http://127.0.0.1:8000/api/users/", {
-        method: "GET",
-        headers: {
-          "Authorization": "Token " + token
-        }
-      });
+  function handleBuyNow(propertyId, price) {
+        alert(`Monthly Price: ₹${price}`);
 
-      const userData = await userRes.json();
-      if (userRes.ok && userData.length > 0) {
-        const user = userData[0];
-        document.getElementById("user-name").innerText = user.username;
-        document.getElementById("user-email").innerText = user.email;
-        document.getElementById("user-info").style.display = "block";
-      }
-    } catch (err) {
-      console.log("Auto-login failed: ", err);
+        // Redirect to order summary page with property ID as query param
+        window.location.href = `orders/order-summery/?property_id=${propertyId}`;
     }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  // for show the property list
+  document.addEventListener("DOMContentLoaded", () => {
+    fetchProperties();
+  });
+
+  function fetchProperties() {
+    axios.get('http://127.0.0.1:8000/property/properties/')
+      .then(response => {
+        console.log("Fetched properties:", response.data);
+        const data = Array.isArray(response.data) ? response.data : response.data.results || [];
+        renderProperties(data);
+      })
+      .catch(error => {
+        console.error("Error fetching properties:", error);
+      });
   }
-});
+
+  function renderProperties(properties) {
+    const container = document.getElementById("propertyList");
+    if (!container) {
+      console.error("Element with id 'propertyList' not found.");
+      return;
+    }
+
+    container.innerHTML = ''; // Clear any existing content
+
+    if (!properties.length) {
+      container.innerHTML = "<p>No properties available.</p>";
+      return;
+    }
+
+    properties.forEach(property => {
+      const card = document.createElement("div");
+      card.classList.add("property-card");
+
+      card.innerHTML = `
+        <img src="${property.images.image}" alt="Home" width="50" height="50" style="margin-bottom: 4px;">
+        <h3>${property.title}</h3>
+        <p><strong>Type:</strong> ${property.property_type}</p>
+        <p><strong>Price:</strong> ₹${property.price_per_month} / month</p>
+        <p><strong>Location:</strong> ${property.city}, ${property.state}</p>
+        <p><strong>Bedrooms:</strong> ${property.bedrooms} | <strong>Bathrooms:</strong> ${property.bathrooms}</p>
+        <p><strong>Available From:</strong> ${property.available_from}</p>
+        <button type="button" id="buyNowBtn" onclick="handleBuyNow(${property.id }, ${ property.price_per_month })">
+          Buy Now
+        </button>
+      `;
+
+      container.appendChild(card);
+    });
+  }
+</script>
+
+<script>
+// window.addEventListener("load", async () => {
+//   const token = localStorage.getItem("authToken");
+//   if (token) {
+//     try {
+//       const userRes = await fetch("http://127.0.0.1:8000/api/users/", {
+//         method: "GET",
+//         headers: {
+//           "Authorization": "Token " + token
+//         }
+//       });
+
+//       const userData = await userRes.json();
+//       if (userRes.ok && userData.length > 0) {
+//         const user = userData[0];
+//         document.getElementById("user-name").innerText = user.username;
+//         document.getElementById("user-email").innerText = user.email;
+//         document.getElementById("user-info").style.display = "block";
+//       }
+//     } catch (err) {
+//       console.log("Auto-login failed: ", err);
+//     }
+//   }
+// });

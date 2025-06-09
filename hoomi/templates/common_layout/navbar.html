@@ -24,10 +24,12 @@
       </li>
     </ul>
 
-    <form class="d-flex me-3" role="search">
-      <input class="form-control me-3 " type="search" placeholder="Search homes..." aria-label="Search">
-      <button class="btn btn-light" type="submit">Search</button>
-    </form>
+<form class="d-flex me-3 position-relative" role="search" onsubmit="return false;">
+  <input id="searchInput" class="form-control me-3" type="search" placeholder="Search homes..." aria-label="Search" autocomplete="off">
+  <button class="btn btn-light" type="submit">Search</button>
+  <ul id="suggestions" class="list-group position-absolute bg-white w-100" style="top: 100%; z-index: 9999;"></ul>
+</form>
+
 
     <div class="d-flex gap-2">
       <a href="login" class="btn btn-outline-light">Login</a>
@@ -35,8 +37,63 @@
     </div>
   </div>
 </nav>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const suggestionsBox = document.getElementById('suggestions');
+  let debounceTimer;
+
+  searchInput.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      const query = searchInput.value.trim();
+      if (query.length >= 2) {
+        fetchSuggestions(query);
+      } else {
+        suggestionsBox.innerHTML = '';
+        suggestionsBox.style.display = 'none';
+      }
+    }, 300);
+  });
+
+  function fetchSuggestions(query) {
+    axios.get(`http://127.0.0.1:8000/property/search/?q=${encodeURIComponent(query)}`)
+      .then(response => {
+        const results = response.data;
+        showSuggestions(results);
+      })
+      .catch(err => {
+        console.error('Search error:', err);
+      });
+  }
+
+  function showSuggestions(properties) {
+    suggestionsBox.innerHTML = '';
+    if (properties.length === 0) {
+      suggestionsBox.style.display = 'none';
+      return;
+    }
+
+    properties.forEach(property => {
+      const item = document.createElement('li');
+      item.classList.add('list-group-item');
+      item.textContent = `${property.title} — ${property.city}, ${property.state}`;
+      item.addEventListener('click', () => {
+        searchInput.value = property.title;
+        suggestionsBox.innerHTML = '';
+        suggestionsBox.style.display = 'none';
+        // Optional: redirect or show this specific property
+      });
+      suggestionsBox.appendChild(item);
+    });
+
+    suggestionsBox.style.display = 'block';
+  }
+</script>
+
 
 <script>
+ 
 const postPropertyLink = document.querySelector('.nav-link[href="property/post_property"]');
 
 if (postPropertyLink) {
