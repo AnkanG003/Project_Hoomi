@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&ipxc-02b6&u&d!wi=8y27h*&a_j2ad6yf$mnu+)&ycy-rl9a7'
+SECRET_KEY = 'django-insecure-&ipxc-02b6&u&d!wi=8y27h*&a_j2ad6yf$mnu+)&ycy-rl9a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -158,16 +158,16 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Razorpay Webhook Secret (store securely)
-WEBHOOK_SECRET  = 'q92ZjyG@i5DyNZs'
-RAZORPAY_KEY_ID =  'rzp_test_ga5rgK4ToFKzWn'
-RAZORPAY_KEY_SECRET = 'GUFWSdzz5W96IbW8lnflMXEi'
+WEBHOOK_SECRET  = '************'
+RAZORPAY_KEY_ID =  '******************'
+RAZORPAY_KEY_SECRET = '****************'
 # PAYPAL_WEBHOOK_SECRET = 'your_paypal_secret'  # optional if using signed headers
 
 # For Testing Payments
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    'a843-2401-4900-1c3f-6bb9-cfd3-3139-1e50-787f.ngrok-free.app',
+    '****************************************************************.ngrok-free.app',
 ]
 
 # CSRF_TRUSTED_ORIGINS = [
