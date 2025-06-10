@@ -1,9 +1,11 @@
+# payments/urls.py
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
     PaymentViewSet, PaymentMethodViewSet,
     TransactionViewSet, InvoiceViewSet,
-    # razorpay_webhook
+    razorpay_webhook,
+    create_razorpay_order,
 )
 
 router = DefaultRouter()
@@ -14,6 +16,8 @@ router.register(r'invoices', InvoiceViewSet, basename='invoices')
 
 urlpatterns = [
     path('', include(router.urls)),
-    # path('webhook/razorpay/', razorpay_webhook, name='razorpay-webhook'),
-    # path('webhook/paypal/', paypal_webhook, name='paypal-webhook'),
+    path('webhook/razorpay/', razorpay_webhook, name='razorpay-webhook'),  # ✅ Add Razorpay webhook path
+]
+urlpatterns += [
+    path('create-razorpay-order/', create_razorpay_order, name='create-razorpay-order'),
 ]
