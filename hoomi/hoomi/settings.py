@@ -158,16 +158,15 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Razorpay Webhook Secret (store securely)
-WEBHOOK_SECRET  = '************'
-RAZORPAY_KEY_ID =  '******************'
-RAZORPAY_KEY_SECRET = '****************'
-# PAYPAL_WEBHOOK_SECRET = 'your_paypal_secret'  # optional if using signed headers
+WEBHOOK_SECRET  = 'jkasb'
+RAZORPAY_KEY_ID =  'rzp_test_ga5rgK4T'
+RAZORPAY_KEY_SECRET = 'G6IbW8lnflMXEi'
 
 # For Testing Payments
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '****************************************************************.ngrok-free.app',
+    'https://5946-24075-c654-41d1-45ef.ngrok-free.app',
 ]
 
 # CSRF_TRUSTED_ORIGINS = [

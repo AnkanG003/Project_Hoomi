@@ -1,14 +1,69 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Order Summary</title>
 </head>
+
 <body>
     <h1>Order Summary</h1>
     <h1>{{ property.title }}</h1>
     <p>₹{{ property.price_per_month }}</p>
     <p>{{ property.description }}</p>
-    <button>Pay Now</button>
+    <button id="payNowBtn">Pay Now</button>
+    <input type="hidden" id="property-amount" value="{{ property.price_per_month }}">
+    <input type="hidden" id="property-id" value="{{ property.id }}">
 </body>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>    
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 </html>
+
+<script>
+    document.getElementById("payNowBtn").addEventListener("click", function () {
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+            alert("Please login first");
+            window.location.href = "/login";
+            return;
+        }
+
+        const propertyId = document.getElementById("property-id").value;
+        const amount = document.getElementById("property-amount").value;
+        // console.log(amount);
+        axios.post("http://127.0.0.1:8000/create-razorpay-order/", {
+            property_id: propertyId,
+            amount: amount
+        }, {
+            headers: {
+                "Authorization": `Token ${token}`,
+                "Content-Type": "application/json"
+            }
+        }).then(res => {
+            const options = {
+                key: res.data.razorpay_key,
+                amount: res.data.amount * 100,
+                currency: "INR",
+                name: "HOOMI",
+                description: "Property Payment",
+                order_id: res.data.order_id,
+                handler: function (response) {
+                    alert("Payment Successful");
+                },
+                prefill: {
+                    name: "Guest",
+                    email: "userEmail",
+                },
+                theme: {
+                    color: "#3399cc"
+                }
+            };
+
+            const rzp = new window.Razorpay(options);
+            rzp.open();
+        }).catch(err => {
+            console.error(err);
+            alert("Failed to create order");
+        });
+    });
+</script>
